@@ -1,8 +1,9 @@
 # Ostra.Autoloader
 
 ![Language: C#](https://img.shields.io/badge/Language-C%23-blue?style=flat-square&logo=sharp)
-
 ![License: GPLv3](https://img.shields.io/badge/License-GPLv3-orange?style=flat-square&logo=gnuemacs)
+
+![Autoloader Logo](banner.png)
 
 Ostra.Autoloader is a simple tool that automatically generates your `loading_order.json` file for Ostranauts mods. No more manual editing or guesswork!
 

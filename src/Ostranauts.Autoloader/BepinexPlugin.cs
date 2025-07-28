@@ -22,7 +22,7 @@ public class AutoloaderPlugin : BaseUnityPlugin
     // Log our awake here so we can see it in LogOutput.txt file
     Log.LogInfo($"Plugin {LCMPluginInfo.PLUGIN_NAME} version {LCMPluginInfo.PLUGIN_VERSION} is loaded!");
 
-    Log.LogInfo($"BasePath: {Application.dataPath}");
+    Log.LogDebug($"BasePath: {Application.dataPath}");
 
     string modsFolder = Path.Combine(Application.dataPath, "Mods");
     string loadOrder = Path.Combine(modsFolder, "loading_order.json");
@@ -54,7 +54,7 @@ public class AutoloaderPlugin : BaseUnityPlugin
 
     ModListing.CreateLoadingOrder();
 
-    Log.LogInfo("populating load_order.json automatically, only autoload mods will be included");
+    Log.LogInfo($"populating load_order.json automatically with {ModListing.allModsByIdentifier.Count} autoload mods");
 
     var dataTop = """
       [

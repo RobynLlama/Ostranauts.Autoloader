@@ -31,7 +31,7 @@ public class AutoloadMetaInf
     var firstLine = reader.ReadLine().Trim();
     if (!firstLine.Equals(header))
     {
-      AutoloaderPlugin.Log.LogInfo($"Error parsing Autoloader inf, bad header: {firstLine}");
+      AutoloaderPlugin.Log.LogWarning($"Error parsing Autoloader inf, bad header: {firstLine}");
       return null;
     }
 
@@ -45,8 +45,6 @@ public class AutoloadMetaInf
     while ((next = reader.ReadLine()) != null)
     {
       next = next.Trim();
-
-      //AutoloaderPlugin.Log.LogInfo($"NextLine: {next}");
 
       if (string.IsNullOrEmpty(next))
         continue;
@@ -80,8 +78,6 @@ public class AutoloadMetaInf
 
         var prop = items[0].Trim();
         var item = items[1].Trim();
-
-        //AutoloaderPlugin.Log.LogInfo($"Parsing prop: {prop}:{item}");
 
         switch (prop)
         {

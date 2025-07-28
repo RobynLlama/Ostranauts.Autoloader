@@ -12,8 +12,6 @@ public static class ModListing
 
   internal static void FindAllModsInDirectory(DirectoryInfo baseDir)
   {
-    //AutoloaderPlugin.Log.LogInfo($"Traversing: {baseDir.Name}");
-
     //Traverse down the tree first
     foreach (var dir in baseDir.GetDirectories())
     {
@@ -22,11 +20,9 @@ public static class ModListing
 
     foreach (var file in baseDir.GetFiles("*Meta.txt"))
     {
-      //AutoloaderPlugin.Log.LogInfo($"examining file: {file.FullName}");
-
       if (file.Name == "Autoload.Meta.txt")
       {
-        AutoloaderPlugin.Log.LogInfo($"Found an autoload in {baseDir.Name}");
+        AutoloaderPlugin.Log.LogDebug($"Found an autoload in {baseDir.Name}");
 
         try
         {

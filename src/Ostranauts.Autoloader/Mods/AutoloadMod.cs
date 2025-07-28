@@ -104,7 +104,7 @@ public class AutoloadMod
   public static AutoloadMod? FromDirectory(DirectoryInfo dir)
   {
 
-    AutoloaderPlugin.Log.LogInfo($"Attempting to create AutoloadMod from {dir.Name}");
+    AutoloaderPlugin.Log.LogDebug($"Attempting to create AutoloadMod from {dir.Name}");
 
     if (!dir.Exists)
     {

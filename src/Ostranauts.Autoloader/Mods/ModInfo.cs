@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace OstraAutoloader.Mods;
 
 public class ModInfo

@@ -1,0 +1,31 @@
+AUTOLOAD.META
+
+# Lines beginning with a hash tag are comments
+# and are ignored by the interpreter
+# when using this template you may remove them
+
+# This instructs the loader which load LoadGroup
+# Your mod belongs to.
+# Valid values:
+#   WithVanilla (vanilla content that does not use FFU)
+#   FFUCore (FFU content that must finish loading before FFU mods)
+#   AfterFFU (FFU mods that require FFU)
+LoadGroup: WithVanilla
+
+# One dependency on one line at a time
+# Use the strName from the mod_info.json of the mod
+# your mod requires to function properly
+#
+# In the future you be able to request a specific
+# version of the mod via ModName@Version optionally 
+# including a comparator such as < > ^ >= <= for 
+# version resolution. The default behavior if a
+# version is omitted is ANY. If Ostra.Autoloader
+# cannot parse a mod's version it will store it
+# as UNKNOWN and fail all matches except ANY
+#
+# Example: the sample mod provided by BBG has
+# "strName": "Sample Mod",
+BEGIN Dependencies
+  # Sample Mod
+END

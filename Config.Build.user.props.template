@@ -1,0 +1,52 @@
+<Project>
+    <PropertyGroup>
+        <DeployToProd>false</DeployToProd>
+        <BuildStaging>false</BuildStaging>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <GameDir>/full/path/to/game</GameDir>
+        <PluginsDir>$(GameDir)/BepInEx/plugins</PluginsDir>
+        <DependsDir>$(GameDir)/Ostranauts_Data/Managed</DependsDir>
+        <StagingDir>$(SolutionRoot)artifacts/dist</StagingDir>
+        <FinalAssemblyName>$(AssemblyName).dll</FinalAssemblyName>
+        <ZipFileName>$(AssemblyName)-$(Version).zip</ZipFileName>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(BuildStaging)' == 'true'">
+        <StagingFiles Include="$(OutputPath)$(FinalAssemblyName)">
+            <Destination>$(StagingDir)\plugins\%(Filename)%(Extension)</Destination>
+        </StagingFiles>
+        <StagingFiles Include="$(SolutionRoot)/README.md">
+            <Destination>$(StagingDir)\%(Filename)%(Extension)</Destination>
+        </StagingFiles>
+        <StagingFiles Include="$(SolutionRoot)/LICENSE">
+            <Destination>$(StagingDir)\%(Filename)%(Extension)</Destination>
+        </StagingFiles>
+    </ItemGroup>
+
+    <Target Name="PostBuildCopy_FromConfig" AfterTargets="Build"
+        Condition="'$(DeployToProd)' == 'true'">
+        <Message Text="Deploy -> $(PluginsDir)/$(FinalAssemblyName)" Importance="High" />
+        <Copy
+            SourceFiles="$(OutputPath)$(FinalAssemblyName)"
+            DestinationFolder="$(PluginsDir)"
+            Condition="Exists('$(OutputPath)$(FinalAssemblyName)')" />
+    </Target>
+
+    <Target Name="PostBuildCopy_ToStaging" AfterTargets="Build"
+        Condition="'$(BuildStaging)' == 'true'">
+        <Message Text="Staging files to $(StagingDir)" Importance="High" />
+        <Copy
+            SourceFiles="@(StagingFiles)"
+            DestinationFiles="@(StagingFiles->'%(Destination)')"
+            ContinueOnError="true" />
+    </Target>
+
+    <Target Name="ZipStaging" AfterTargets="PostBuildCopy_ToStaging"
+        Condition="'$(BuildStaging)' == 'true'">
+        <Message Text="Creating zip archive $(StagingDir)/../$(ZipFileName)"
+            Importance="High" />
+        <Exec Command="cd $(StagingDir); zip -r $(ZipFileName) ." />
+    </Target>
+</Project>

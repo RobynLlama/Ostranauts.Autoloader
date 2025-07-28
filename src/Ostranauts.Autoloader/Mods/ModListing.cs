@@ -32,10 +32,14 @@ public static class ModListing
         {
           var mod = AutoloadMod.FromDirectory(baseDir);
           if (mod is not null)
-            if (!allModsByIdentifier.ContainsKey(mod.Inf.strName))
-              allModsByIdentifier.Add(mod.Inf.strName, mod);
-            else
+            if (allModsByIdentifier.ContainsKey(mod.Inf.strName))
               AutoloaderPlugin.Log.LogWarning($"Attempting to load the same mod twice! {mod.Inf.strName}");
+            else
+            {
+              AutoloaderPlugin.Log.LogInfo($"Registered {mod.Inf.strName}@{mod.Inf.strModVersion}");
+              allModsByIdentifier.Add(mod.Inf.strName, mod);
+            }
+
         }
         catch (Exception ex)
         {

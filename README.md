@@ -71,6 +71,17 @@ BepInEx/
 - Include an `Autoload.Meta.txt` file that lists dependencies and loading group or Ostra.Autoloader will skip your mod entirely
 - Ostra.Autoloader will handle the rest, ensuring your mod loads after its dependencies.
 
+See the [default Autoload file](Defaults/Autoload.Meta.txt) for more information on how to use Autoload files
+
+## I want to use a mod that doesn't support autoload files
+
+> [!IMPORTANT]
+> These instructions will only work for simple mods that do not have any dependencies. More complex mods should have their Autoload.Meta.txt file tailored to work by the mod's author.
+
+First, install the mod manually to your Mods folder like normal.
+
+Then, try placing the [default Autoload file](Defaults/Autoload.Meta.txt) in the mod's directory next to the `mod_info.json` file. If the mod doesn't depend on FFU, you should be set and it should just load correctly. If the mod depends on FFU, you should change the LoadGroup in the Autoload file to `AfterFFU`.
+
 ---
 
 ## Troubleshooting / Common Problems

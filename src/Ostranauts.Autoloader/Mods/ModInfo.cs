@@ -17,6 +17,7 @@ public class ModInfo
   public readonly string strAuthor;
   public readonly string strModURL;
   public readonly string strGameVersion;
+  public readonly string strModVersion;
   public readonly string strNotes;
 
   public ModInfo(
@@ -24,6 +25,7 @@ public class ModInfo
   string strAuthor,
   string strModURL,
   string strGameVersion,
+  string strModVersion,
   string strNotes
   )
   {
@@ -31,8 +33,9 @@ public class ModInfo
     this.strAuthor = strAuthor;
     this.strModURL = strModURL;
     this.strGameVersion = strGameVersion;
+    this.strModVersion = strModVersion;
     this.strNotes = strNotes;
   }
 
-  public ModInfo(JsonModInfo info) : this(info.strName, info.strAuthor, info.strModURL, info.strGameVersion, info.strNotes) { }
+  public ModInfo(JsonModInfo info) : this(info.strName, info.strAuthor, info.strModURL, info.strGameVersion, info.strModVersion, info.strNotes) { }
 }

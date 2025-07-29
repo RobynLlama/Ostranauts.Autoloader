@@ -17,10 +17,16 @@
         <StagingFiles Include="$(OutputPath)$(FinalAssemblyName)">
             <Destination>$(StagingDir)\plugins\%(Filename)%(Extension)</Destination>
         </StagingFiles>
-        <StagingFiles Include="$(SolutionRoot)/README.md">
+
+        <StagingFiles Include="$(SolutionRoot)\README.md">
             <Destination>$(StagingDir)\%(Filename)%(Extension)</Destination>
         </StagingFiles>
-        <StagingFiles Include="$(SolutionRoot)/LICENSE">
+
+        <StagingFiles Include="$(SolutionRoot)\LICENSE">
+            <Destination>$(StagingDir)\%(Filename)%(Extension)</Destination>
+        </StagingFiles>
+
+        <StagingFiles Include="$(SolutionRoot)\TSMedia\*.*">
             <Destination>$(StagingDir)\%(Filename)%(Extension)</Destination>
         </StagingFiles>
     </ItemGroup>

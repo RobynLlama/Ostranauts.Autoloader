@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Text;
+using System.Linq;
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using LitJson;
 using OstraAutoloader.Mods;
 using OstraAutoloader.Patches;
 using UnityEngine;
@@ -55,66 +57,28 @@ public class AutoloaderPlugin : BaseUnityPlugin
     ModListing.CreateLoadingOrder();
 
     Log.LogInfo($"populating load_order.json automatically with {ModListing.allModsByIdentifier.Count} autoload mods");
+    WriteLoadingOrder(loadOrder);
+  }
 
-    var dataTop = """
-      [
-        {
-          "strName": "Mod Loading Order",
-          "strNotes": "To mod Ostranauts, place this loading_order.json file in your Mods/ folder (your game's Options->Files screen will show you where it should be), along with your mod's folder. Your mod folder should match the folder structure in the zip where you found this file. Make sure your mod folder name matches it's entry in aLoadOrder list below. 'core' refers to the base game data, which usually needs to be loaded first unless you know what you're doing.",
-          "aLoadOrder": [
-            "core"
-      """;
-
-    var dataBot = """
-          ],
-          "aIgnorePatterns": [
-            "StreamingAssets/data/names_full"
-          ]
-        }
-      ]
-      """;
-
-    StringBuilder sb = new(dataTop);
-    string indent = new(' ', 6);
-
-    int length = ModListing.sortedMods.Length;
-    int noComma = length - 1;
-
-    if (length > 0)
+  internal void WriteLoadingOrder(string filePath)
+  {
+    JsonModList data = new()
     {
-      sb.AppendLine(",");
-    }
-    else
-      sb.AppendLine();
+      strName = "Mod Loading Order",
+      aLoadOrder = ["core", .. ModListing.sortedMods.Select(x => x.VirtualDir)],
+      //This is in the loading_order.json for the sample mod so I copied it
+      aIgnorePatterns = ["StreamingAssets/data/names_full"],
+    };
 
-    for (int i = 0; i < length; i++)
+    using StreamWriter writer = new(filePath);
+    JsonWriter jsonWriter = new(writer)
     {
-      var item = ModListing.sortedMods[i];
+      PrettyPrint = true,
+      IndentValue = 2
+    };
 
-      sb.Append(indent);
-      sb.Append('"');
-      sb.Append(item.VirtualDir);
-      sb.Append('"');
-
-      if (i < noComma)
-        sb.Append(',');
-
-      sb.AppendLine();
-    }
-
-    sb.AppendLine(dataBot);
-
-    try
-    {
-      using var writer = new StreamWriter(loadFile.FullName, false);
-      writer.Write(sb.ToString());
-      writer.Flush();
-    }
-    catch (Exception ex)
-    {
-      Log.LogError($"Failed to create load_order.json, mods may not be loaded\n{ex}");
-    }
-
+    List<JsonModList> list = [data];
+    JsonMapper.ToJson(list, jsonWriter);
   }
 
 }

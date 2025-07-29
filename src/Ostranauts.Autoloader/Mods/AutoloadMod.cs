@@ -113,7 +113,7 @@ public class AutoloadMod
     }
 
     string infoPath = Path.Combine(dir.FullName, "mod_info.json");
-    string metaPath = Path.Combine(dir.FullName, "Autoload.Meta.txt");
+    string metaPath = Path.Combine(dir.FullName, "Autoload.Meta.toml");
 
     FileInfo modInfo = new(infoPath);
     FileInfo modMeta = new(metaPath);
@@ -126,7 +126,7 @@ public class AutoloadMod
 
     if (!modMeta.Exists)
     {
-      AutoloaderPlugin.Log.LogWarning($"{dir.FullName} does not contain an Autoload.Meta.txt");
+      AutoloaderPlugin.Log.LogWarning($"{dir.FullName} does not contain an Autoload.Meta.toml");
       return null;
     }
 

@@ -18,9 +18,9 @@ public static class ModListing
       FindAllModsInDirectory(dir);
     }
 
-    foreach (var file in baseDir.GetFiles("*Meta.txt"))
+    foreach (var file in baseDir.GetFiles("Autoload.Meta.toml"))
     {
-      if (file.Name == "Autoload.Meta.txt")
+      if (file.Name == "Autoload.Meta.toml")
       {
         AutoloaderPlugin.Log.LogDebug($"Found an autoload in {baseDir.Name}");
 

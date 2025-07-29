@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
+using Tommy;
 
 namespace OstraAutoloader.Mods;
 
@@ -19,103 +22,45 @@ public class AutoloadMetaInf
     if (!file.Exists)
       return null;
 
-    //Manually serialize from a basic text format
-    //because Newtonsoft.Json can't exist in the game's
-    //env without a whole bunch of extra dependencies
+    //Serialize from our lovely TOML file
+    using StreamReader reader = File.OpenText(file.FullName);
+    TomlTable meta = TOML.Parse(reader);
 
-    using TextReader reader = new StreamReader(file.FullName);
+    var signature = meta["FileType"].AsString;
 
-    var header = "AUTOLOAD.META";
-
-    //read the header
-    var firstLine = reader.ReadLine().Trim();
-    if (!firstLine.Equals(header))
+    if (!signature.HasValue || !string.Equals(signature.Value, "AUTOLOAD.META", StringComparison.InvariantCultureIgnoreCase))
     {
-      AutoloaderPlugin.Log.LogWarning($"Error parsing Autoloader inf, bad header: {firstLine}");
+      AutoloaderPlugin.Log.LogWarning($"Skipping a malformed Autoload meta file (no or bad FileType header): {signature.HasValue}|{signature.Value}");
       return null;
     }
 
-    //this could be much more idiomatic but w/e
-    string? next;
+    string LoadGroup = meta["LoadGroup"].AsString.Value;
+    ModLoadingGroup loadingGroup;
 
-    bool depLoop = false;
-    List<string> _deps = [];
-    ModLoadingGroup? group = null;
-
-    while ((next = reader.ReadLine()) != null)
+    switch (LoadGroup.ToLowerInvariant())
     {
-      next = next.Trim();
-
-      if (string.IsNullOrEmpty(next))
-        continue;
-
-      if (next[0] == '#')
-        continue;
-
-      if (depLoop)
-      {
-
-        if (next.Equals("END", System.StringComparison.InvariantCultureIgnoreCase))
-        {
-          depLoop = false;
-          continue;
-        }
-
-        _deps.Add(next);
-      }
-      else if (next.Equals("BEGIN Dependencies", System.StringComparison.InvariantCultureIgnoreCase))
-        depLoop = true;
-      else if (next.Contains(":"))
-      {
-        //property assignment
-        var items = next.ToLowerInvariant().Split(':');
-
-        if (items.Length != 2)
-        {
-          AutoloaderPlugin.Log.LogWarning($"Ignoring malformed property: {next}");
-          continue;
-        }
-
-        var prop = items[0].Trim();
-        var item = items[1].Trim();
-
-        switch (prop)
-        {
-          case "loadgroup":
-            switch (item)
-            {
-              case "withvanilla":
-                group = ModLoadingGroup.WithVanilla;
-                break;
-              case "ffucore":
-                group = ModLoadingGroup.FFUCore;
-                break;
-              case "afterffu":
-                group = ModLoadingGroup.AfterFFU;
-                break;
-              default:
-                AutoloaderPlugin.Log.LogWarning($"Ignoring unknown group type: {item}");
-                break;
-            }
-            break;
-          default:
-            AutoloaderPlugin.Log.LogWarning($"Ignoring unknown property: {prop}");
-            break;
-        }
-      }
-      else
-      {
-        //We shouldn't make it here
-        AutoloaderPlugin.Log.LogWarning($"Ignoring malformed line: {next}");
-      }
+      case "withvanilla":
+        loadingGroup = ModLoadingGroup.WithVanilla;
+        break;
+      case "ffucore":
+        loadingGroup = ModLoadingGroup.FFUCore;
+        break;
+      case "afterffu":
+        loadingGroup = ModLoadingGroup.AfterFFU;
+        break;
+      default:
+        AutoloaderPlugin.Log.LogWarning($"Unable to parse loading group {LoadGroup}");
+        return null;
     }
 
-    if (group is not ModLoadingGroup validGroup)
+    var deps = meta["dependencies"];
+
+    if (!deps.IsTable)
     {
-      AutoloaderPlugin.Log.LogWarning("Autoload Meta has null group, unable to parse");
+      AutoloaderPlugin.Log.LogWarning("Dependencies is malformed");
       return null;
     }
 
-    return new([.. _deps], validGroup);
+    return new([.. deps.Keys], loadingGroup);
   }
 }

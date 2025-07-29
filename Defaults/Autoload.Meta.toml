@@ -1,0 +1,29 @@
+# Autoload Meta file identifier for validation
+FileType="AUTOLOAD.META"
+
+# Lines beginning with a hash (#) are comments
+# and are ignored by the interpreter.
+# You may remove these comments when using this template.
+
+# This instructs the loader which LoadGroup your mod belongs to.
+# Valid values:
+#   WithVanilla  - vanilla content that does not use FFU
+#   FFUCore      - FFU content that must finish loading before FFU mods
+#   AfterFFU     - FFU mods that require FFU
+LoadGroup="WithVanilla"
+
+# Specify one dependency per line.
+# Use the "strName" from the mod_info.json of the mod your mod requires.
+# Currently only supports "ANY" for version
+#
+# If the mod's name contains spaces use quotes for the name!
+#
+# Examples:
+#   "Sample Mod" = "1.2.3"
+#   "Sample Mod" = "">=1.0.0"
+#   NoSpacesMod = "1.0.0"
+
+[dependencies]
+  # List dependencies here as keys with optional versions as values.
+  # Example without version filtering:
+  # "Sample Mod" = "ANY"

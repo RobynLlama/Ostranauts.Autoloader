@@ -39,7 +39,8 @@ public class AutoloaderPlugin : BaseUnityPlugin
     }
     catch (Exception ex)
     {
-      Log.LogError($"Failed to run one or more patches, autoloaded mods may not work or may not be loaded at all!\n{ex}");
+      Log.LogFatal($"Failed to run a patch. Autoloader is aborting\n{ex}");
+      return;
     }
 
     DirectoryInfo pluginsDir = new(Paths.PluginPath);

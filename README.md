@@ -3,7 +3,7 @@
 ![Language: C#](https://img.shields.io/badge/Language-C%23-blue?style=flat-square&logo=sharp)
 ![License: GPLv3](https://img.shields.io/badge/License-GPLv3-orange?style=flat-square&logo=gnuemacs)
 
-![Autoloader Logo](banner.png)
+![Autoloader Logo](https://raw.githubusercontent.com/RobynLlama/Ostranauts.Autoloader/refs/heads/main/banner.png)
 
 Ostra.Autoloader is a simple tool that automatically generates your `loading_order.json` file for Ostranauts mods. No more manual editing or guesswork!
 
@@ -71,7 +71,7 @@ BepInEx/
 - Include an `Autoload.Meta.txt` file that lists dependencies and loading group or Ostra.Autoloader will skip your mod entirely
 - Ostra.Autoloader will handle the rest, ensuring your mod loads after its dependencies.
 
-See the [default Autoload file](Defaults/Autoload.Meta.txt) for more information on how to use Autoload files
+See the [default Autoload file](https://github.com/RobynLlama/Ostranauts.Autoloader/blob/main/Defaults/Autoload.Meta.txt) for more information on how to use Autoload files
 
 ## I want to use a mod that doesn't support autoload files
 
@@ -80,7 +80,7 @@ See the [default Autoload file](Defaults/Autoload.Meta.txt) for more information
 
 First, install the mod manually to your Mods folder like normal.
 
-Then, try placing the [default Autoload file](Defaults/Autoload.Meta.txt) in the mod's directory next to the `mod_info.json` file. If the mod doesn't depend on FFU, you should be set and it should just load correctly. If the mod depends on FFU, you should change the LoadGroup in the Autoload file to `AfterFFU`.
+Then, try placing the [default Autoload file](https://github.com/RobynLlama/Ostranauts.Autoloader/blob/main/Defaults/Autoload.Meta.txt) in the mod's directory next to the `mod_info.json` file. If the mod doesn't depend on FFU, you should be set and it should just load correctly. If the mod depends on FFU, you should change the LoadGroup in the Autoload file to `AfterFFU`.
 
 ---
 
@@ -94,13 +94,13 @@ Then, try placing the [default Autoload file](Defaults/Autoload.Meta.txt) in the
 
 ## License
 
-This project is licensed under the GNU Public License Version 3, see [License](LICENSE) for more information
+This project is licensed under the GNU Public License Version 3, see [License](https://github.com/RobynLlama/Ostranauts.Autoloader/blob/main/LICENSE) for more information
 
 ---
 
 ## Contact
 
-For questions or support, please join the Blue Bottle Games discord and contact the mod author, Robyn, or open an issue in this repository
+For questions or support, please join the Blue Bottle Games discord and contact the mod author, Robyn, or open an issue in the [github repository](https://github.com/RobynLlama/Ostranauts.Autoloader/issues/new)
 
 ---
 

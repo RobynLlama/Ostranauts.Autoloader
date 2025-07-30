@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
@@ -70,6 +71,16 @@ public class AutoloaderPlugin : BaseUnityPlugin
       //This is in the loading_order.json for the sample mod so I copied it
       aIgnorePatterns = ["StreamingAssets/data/names_full"],
     };
+
+    StringBuilder sb = new("\nAutoloaded the following mods in this order:\n");
+
+    foreach (var item in data.aLoadOrder)
+    {
+      sb.Append("  ");
+      sb.AppendLine(item);
+    }
+
+    Log.LogInfo(sb);
 
     using StreamWriter writer = new(filePath);
     JsonWriter jsonWriter = new(writer)

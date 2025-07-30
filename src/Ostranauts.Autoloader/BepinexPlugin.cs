@@ -57,7 +57,7 @@ public class AutoloaderPlugin : BaseUnityPlugin
 
     ModListing.CreateLoadingOrder();
 
-    Log.LogInfo($"populating load_order.json automatically with {ModListing.allModsByIdentifier.Count} autoload mods");
+    Log.LogInfo($"populating load_order.json automatically with {ModListing.sortedMods.Length} autoload mods");
     WriteLoadingOrder(loadOrder);
   }
 

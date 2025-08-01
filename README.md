@@ -7,8 +7,6 @@
 
 Ostra.Autoloader is a simple tool that automatically generates your `loading_order.json` file for Ostranauts mods. No more manual editing or guesswork!
 
----
-
 ## Why use Ostra.Autoloader?
 
 - **No manual JSON editing:** Mod authors can include a special `Autoload.Meta.toml` file in their mod folder, and Ostra.Autoloader will read it to figure out how to load the mod.
@@ -16,16 +14,12 @@ Ostra.Autoloader is a simple tool that automatically generates your `loading_ord
   - This means mod managers can install mods for you, finally, no more manual installing!
 - **Automatic dependency handling:** Mods can declare dependencies on other mods, and Ostra.Autoloader will make sure those dependencies load first. This helps avoid common mistakes where mods fail because their dependencies are missing or loaded in the wrong order.
 
----
-
 ## How it works
 
 1. **Scan for mods:** Ostra.Autoloader looks through your `Mods` folder *and* the `BepInEx/Plugins` folder for any mod folders containing an `Autoload.Meta.toml` file.
 2. **Read mod info:** It reads the mod's `mod_info.json` and `Autoload.Meta.toml` to gather information about the mod and its dependencies.
 3. **Resolve dependencies:** It figures out which mods depend on others and generates a correct loading order for you.
 4. **Create `loading_order.json`:** Finally, it writes out a `loading_order.json` file automatically, so the game knows the right order to load your mods. No more `invalid json` errors!
-
----
 
 ## Installation
 
@@ -45,9 +39,7 @@ Ostra.Autoloader is a simple tool that automatically generates your `loading_ord
 
 #### Available Managers
 
-- TBA (Community is not launched yet)
-
----
+- TBA (Mod managers are not updated for the community yet)
 
 ## Example mod folder structure
 
@@ -64,14 +56,29 @@ BepInEx/
         └── Autoload.Meta.toml
 ```
 
----
-
 ## Notes for mod authors
 
 - Include an `Autoload.Meta.toml` file that lists dependencies and loading group or Ostra.Autoloader will skip your mod entirely
 - Ostra.Autoloader will handle the rest, ensuring your mod loads after its dependencies.
 
 See the [default Autoload file](https://github.com/RobynLlama/Ostranauts.Autoloader/blob/main/Defaults/Autoload.Meta.toml) for more information on how to use Autoload files
+
+### How to package for the Thunderstore
+
+Mod managers that install from the thunderstore will modify your folder structure. Please be familiar with the [package documentation](https;//wiki.thunderstore.io/creating-a-package)
+
+Sample Package Layout:
+
+![Example Layout](https://raw.githubusercontent.com/RobynLlama/Ostranauts.Autoloader/refs/heads/main/Media/Example.png)
+
+> [!NOTE]
+> As shown in the image, your mod's DLL files must be under a folder named `/plugins`.
+>
+> Individual JSON mods should also be underneath `/plugins` in their own folders. Each JSON mod should have an `Autoload.Meta.toml` file right next to their `mod_info.json`.
+>
+> Finally, all your Thunderstore package files should be directly on the root of the zip you create. That means there should be no folders before you can see `manifest.json`, `README.md` and `icon.png`
+
+Feel free to examine this [ExamplePackage](https://github.com/RobynLlama/Ostranauts.Autoloader/raw/refs/heads/main/Media/PackageExample.zip) to get a better feel for how to package your mod.
 
 ## I want to use a mod that doesn't support autoload files
 
@@ -82,26 +89,18 @@ First, install the mod manually to your Mods folder like normal.
 
 Then, try placing the [default Autoload file](https://github.com/RobynLlama/Ostranauts.Autoloader/blob/main/Defaults/Autoload.Meta.toml) in the mod's directory next to the `mod_info.json` file. If the mod doesn't depend on FFU, you should be set and it should just load correctly. If the mod depends on FFU, you should change the LoadGroup in the Autoload file to `AfterFFU`.
 
----
-
 ## Troubleshooting / Common Problems
 
 - If your mod isn't loading, check the log file (`BepInEx/LogOutput.txt`) in your profile for warnings about missing dependencies or malformed meta files.
 - Ensure the Autoload meta file is properly formatted
 - Ensure the Autoload meta file is named exactly `Autoload.Meta.toml`
 
----
-
 ## License
 
 This project is licensed under the GNU Public License Version 3, see [License](https://github.com/RobynLlama/Ostranauts.Autoloader/blob/main/LICENSE) for more information
 
----
-
 ## Contact
 
 For questions or support, please join the Blue Bottle Games discord and contact the mod author, Robyn, or open an issue in the [github repository](https://github.com/RobynLlama/Ostranauts.Autoloader/issues/new)
-
----
 
 Enjoy hassle-free mod loading with **Ostra.Autoloader**!

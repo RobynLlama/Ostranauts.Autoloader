@@ -2,6 +2,10 @@
 
 For the full changelog please read the project's [commit history](https://github.com/RobynLlama/Ostranauts.Autoloader/commits/main/)
 
+## Version 0.1.6
+
+- Modified Dependencies in TS package
+
 ## Version 0.1.5
 
 - Added output for mod loading order

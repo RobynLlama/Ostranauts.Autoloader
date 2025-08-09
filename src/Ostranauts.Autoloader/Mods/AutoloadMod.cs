@@ -12,18 +12,6 @@ public class AutoloadMod
   public readonly DirectoryInfo BaseDir;
   public AutoloadMod[] Dependencies = [];
 
-  public string VirtualDir
-  {
-    get
-    {
-      string dir = BaseDir.FullName;
-      dir = dir.Replace(Path_Patches.ModsPath, Path_Patches.ModsVirtual);
-      dir = dir.Replace(Path_Patches.PluginPath, Path_Patches.PluginVirtual);
-
-      return dir;
-    }
-  }
-
   public bool DependenciesResolved => _state == ResolutionState.Resolved;
   public bool FailedToLoad => _state == ResolutionState.Failed;
   private ResolutionState _state = ResolutionState.Pending;

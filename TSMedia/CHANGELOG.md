@@ -7,6 +7,7 @@ For the full changelog please read the project's [commit history](https://github
 - Now respects the user defined mods directory
 - Stores mods as fully qualified paths in the load_order.json file
 - No longer uses Path.Combine patch for slight performance improvement during loading
+- Outputs loaded mod names to game console
 
 ## Version 0.1.6
 

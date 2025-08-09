@@ -68,13 +68,19 @@ public static class DataHandler_Patches
 
     StringBuilder sb = new("\nAutoloaded the following mods in this order:\n");
 
-    foreach (var item in data.aLoadOrder)
+    sb.Append("  ");
+    sb.AppendLine("core");
+
+    foreach (var item in ModListing.sortedMods)
     {
       sb.Append("  ");
-      sb.AppendLine(item);
+      if (item.FailedToLoad)
+        sb.Append("(FAILED) ");
+      sb.AppendLine(item.Inf.strName);
     }
 
     AutoloaderPlugin.Log.LogInfo(sb);
+    ConsoleToGUI.instance.LogInfo(sb.ToString());
 
     using StreamWriter writer = new(filePath);
     JsonWriter jsonWriter = new(writer)

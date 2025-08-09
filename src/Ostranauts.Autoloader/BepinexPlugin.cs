@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
-using LitJson;
-using OstraAutoloader.Mods;
 using OstraAutoloader.Patches;
 using UnityEngine;
 
@@ -24,73 +18,18 @@ public class AutoloaderPlugin : BaseUnityPlugin
 
     // Log our awake here so we can see it in LogOutput.txt file
     Log.LogInfo($"Plugin {LCMPluginInfo.PLUGIN_NAME} version {LCMPluginInfo.PLUGIN_VERSION} is loaded!");
-
-    Log.LogDebug($"BasePath: {Application.dataPath}");
-
-    string modsFolder = Path.Combine(Application.dataPath, "Mods");
-    string loadOrder = Path.Combine(modsFolder, "loading_order.json");
-
-    FileInfo loadFile = new(loadOrder);
+    Log.LogDebug($"Plugins Path: {Application.dataPath}");
 
     Harmony patcher = new(LCMPluginInfo.PLUGIN_GUID);
 
     try
     {
-      patcher.PatchAll(typeof(Path_Patches));
+      patcher.PatchAll(typeof(DataHandler_Patches));
     }
     catch (Exception ex)
     {
       Log.LogFatal($"Failed to run a patch. Autoloader is aborting\n{ex}");
       return;
     }
-
-    DirectoryInfo pluginsDir = new(Paths.PluginPath);
-    DirectoryInfo modsDir = new(Path.Combine(Application.dataPath, "Mods"));
-
-    Path_Patches.ModsPath = modsDir.FullName + Path.DirectorySeparatorChar;
-    Path_Patches.PluginPath = pluginsDir.FullName + Path.DirectorySeparatorChar;
-
-    Log.LogInfo($"Searching plugins for any downloaded mods | {pluginsDir.FullName}");
-    ModListing.FindAllModsInDirectory(pluginsDir);
-
-    Log.LogInfo($"Searching mods dir for any manual mods | {modsDir.FullName}");
-    ModListing.FindAllModsInDirectory(modsDir);
-
-    ModListing.CreateLoadingOrder();
-
-    Log.LogInfo($"populating load_order.json automatically with {ModListing.sortedMods.Length} autoload mods");
-    WriteLoadingOrder(loadOrder);
   }
-
-  internal void WriteLoadingOrder(string filePath)
-  {
-    JsonModList data = new()
-    {
-      strName = "Mod Loading Order",
-      aLoadOrder = ["core", .. ModListing.sortedMods.Select(x => x.VirtualDir)],
-      //This is in the loading_order.json for the sample mod so I copied it
-      aIgnorePatterns = ["StreamingAssets/data/names_full"],
-    };
-
-    StringBuilder sb = new("\nAutoloaded the following mods in this order:\n");
-
-    foreach (var item in data.aLoadOrder)
-    {
-      sb.Append("  ");
-      sb.AppendLine(item);
-    }
-
-    Log.LogInfo(sb);
-
-    using StreamWriter writer = new(filePath);
-    JsonWriter jsonWriter = new(writer)
-    {
-      PrettyPrint = true,
-      IndentValue = 2
-    };
-
-    List<JsonModList> list = [data];
-    JsonMapper.ToJson(list, jsonWriter);
-  }
-
 }

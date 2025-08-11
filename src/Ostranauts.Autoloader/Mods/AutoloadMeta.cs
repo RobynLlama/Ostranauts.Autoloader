@@ -7,11 +7,13 @@ namespace OstraAutoloader.Mods;
 public class AutoloadMetaInf
 {
   public readonly string[] Dependencies = [];
+  public readonly string[] SoftDependencies = [];
   public readonly ModLoadingGroup LoadingGroup = ModLoadingGroup.WithVanilla;
 
-  public AutoloadMetaInf(string[] Dependencies, ModLoadingGroup LoadingGroup)
+  public AutoloadMetaInf(string[] Dependencies, string[] SoftDependencies, ModLoadingGroup LoadingGroup)
   {
     this.Dependencies = Dependencies;
+    this.SoftDependencies = SoftDependencies;
     this.LoadingGroup = LoadingGroup;
   }
 
@@ -59,6 +61,12 @@ public class AutoloadMetaInf
       return null;
     }
 
-    return new([.. deps.Keys], loadingGroup);
+    var optional = meta["softDependencies"];
+    string[] softDeps = [];
+
+    if (optional.IsTable)
+      softDeps = [.. optional.Keys];
+
+    return new([.. deps.Keys], softDeps, loadingGroup);
   }
 }

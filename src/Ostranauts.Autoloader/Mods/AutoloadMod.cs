@@ -50,12 +50,16 @@ public class AutoloadMod
 
     bool failed = false;
 
-    foreach (var item in MetaInf.Dependencies)
+    bool TryLoadMod(string name, bool hardDep = true)
     {
-      if (!ModListing.allModsByIdentifier.TryGetValue(item, out var mod))
+      string depType = hardDep ? "Dependency" : "Soft Dependency";
+
+      if (!ModListing.allModsByIdentifier.TryGetValue(name, out var mod))
       {
-        failed = true;
-        AutoloaderPlugin.Log.LogWarning($"Unable to resolve dependency {item} for mod {Inf.strName}");
+        if (hardDep)
+          AutoloaderPlugin.Log.LogWarning($"Unable to resolve dependency {name} for mod {Inf.strName}");
+
+        return false;
       }
       else
       {
@@ -64,22 +68,42 @@ public class AutoloadMod
           //Check if the mods are in compatible loading groups
           bool compat = (int)MetaInf.LoadingGroup >= (int)mod.MetaInf.LoadingGroup;
 
-
           if (compat)
+          {
             temp.Add(mod);
+            return true;
+          }
           else
           {
-            AutoloaderPlugin.Log.LogWarning($"Dependency {item} is in a later loading group than mod {Inf.strName}");
-            failed = true;
+            AutoloaderPlugin.Log.LogWarning($"{depType} {name} is in a later loading group than mod {Inf.strName}");
+            return false;
           }
         }
         else
         {
-          AutoloaderPlugin.Log.LogWarning($"Unable to resolve dependency {item} for mod {Inf.strName}");
-          failed = true;
+          if (hardDep)
+            AutoloaderPlugin.Log.LogWarning($"Unable to resolve Dependency {name} for mod {Inf.strName}");
+          return false;
         }
       }
     }
+
+    foreach (var item in MetaInf.Dependencies)
+    {
+      if (!TryLoadMod(item))
+      {
+        failed = true;
+        break;
+      }
+    }
+
+    //Soft Dependencies don't interrupt resolution if they fail
+    if (!failed)
+      foreach (var item in MetaInf.SoftDependencies)
+      {
+        if (!TryLoadMod(item, hardDep: false))
+          AutoloaderPlugin.Log.LogDebug($"Failed to resolve a soft dependency {item} for {Inf.strName}");
+      }
 
     Dependencies = [.. temp];
     _state = failed ? ResolutionState.Failed : ResolutionState.Resolved;

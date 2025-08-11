@@ -27,3 +27,9 @@ LoadGroup="WithVanilla"
   # List dependencies here as keys with optional versions as values.
   # Example without version filtering:
   # "Sample Mod" = "ANY"
+
+[softDependencies]
+  # List dependencies here as keys with optional versions as values.
+  # A soft dependency will not fail if the target is not present
+  # Consider it an optional dependency
+  # "Sample Mod" = "ANY"

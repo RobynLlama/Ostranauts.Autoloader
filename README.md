@@ -89,10 +89,10 @@ Here's some basic guidelines on when you should use what type of dependency for 
 
 - **Use soft dependencies for optional compatibility:**
 
-  > [!IMPORTANT]
-  > A soft dependency won't cause resolution failure so your mod will still work without it present!
-
   If your mod adds features when another mod is present but can work without it, declare a soft dependency to load after that mod if it’s installed.
+
+> [!IMPORTANT]
+> A soft dependency won't cause resolution failure so your mod will still work without it present!
 
 - **Communicate with other mod authors:**  
   Coordinate load order needs, especially when your mod overrides or patches behavior in another mod. Work together with other modders to coordinate hard and soft dependencies, especially with patch or fix mods that work conditionally.

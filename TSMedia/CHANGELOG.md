@@ -2,6 +2,10 @@
 
 For the full changelog please read the project's [commit history](https://github.com/RobynLlama/Ostranauts.Autoloader/commits/main/)
 
+## Version 0.1.8
+
+- Adds the ability to define soft dependencies in a mod's Autoload.Meta.toml file. This is fully backwards compatible and will not break existing meta files
+
 ## Version 0.1.7
 
 - Now respects the user defined mods directory

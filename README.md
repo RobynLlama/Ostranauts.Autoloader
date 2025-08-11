@@ -80,6 +80,31 @@ Sample Package Layout:
 
 Feel free to examine this [ExamplePackage](https://github.com/RobynLlama/Ostranauts.Autoloader/raw/refs/heads/main/Media/PackageExample.zip) to get a better feel for how to package your mod.
 
+### Best Practices for Mod Load Order Coordination
+
+Here's some basic guidelines on when you should use what type of dependency for your mod:
+
+- **Declare hard dependencies for required mods:**  
+  If your mod requires another mod to function, declare it as a hard dependency. This guarantees your mod loads after it.
+
+- **Use soft dependencies for optional compatibility:**
+
+  > [!IMPORTANT]
+  > A soft dependency won't cause resolution failure so your mod will still work without it present!
+
+  If your mod adds features when another mod is present but can work without it, declare a soft dependency to load after that mod if it’s installed.
+
+- **Communicate with other mod authors:**  
+  Coordinate load order needs, especially when your mod overrides or patches behavior in another mod. Work together with other modders to coordinate hard and soft dependencies, especially with patch or fix mods that work conditionally.
+
+- **Document load order requirements clearly:**  
+  Include instructions or metadata so users and tools know how to load your mod relative to others.
+
+- **Follow community standards and conventions:**  
+  Participate in modding community discussions and adhere to established best practices for declaring dependencies and load order.
+
+These practices ensure users or tools like Ostra.Autoloader will have an easy time installing and using your mods.
+
 ## I want to use a mod that doesn't support autoload files
 
 > [!IMPORTANT]

@@ -1,5 +1,6 @@
 ﻿using System;
 using BepInEx;
+using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
 using OstraAutoloader.Patches;
@@ -12,10 +13,15 @@ public class AutoloaderPlugin : BaseUnityPlugin
 {
   internal static AutoloaderPlugin Instance = null!;
   internal ManualLogSource Log;
+  internal ConfigEntry<bool> BackupNeeded;
+  internal ConfigEntry<bool> UninstallMode;
+
   public AutoloaderPlugin()
   {
     Instance ??= this;
     Log = Logger;
+    BackupNeeded = Config.Bind("Backup", "BackupNeeded", true, "This is managed automatically by Ostra.Autoloader to keep track of if a backup of the original load_order.json file was made");
+    UninstallMode = Config.Bind("Uninstall", "UninstallMode", false, "Set this to true and run the game once. Ostra.Autoloader will undo any changes it made, where possible");
   }
 
   private void Awake()

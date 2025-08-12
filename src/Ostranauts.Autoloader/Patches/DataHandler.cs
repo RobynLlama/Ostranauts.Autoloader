@@ -5,6 +5,7 @@ using System.Text;
 using BepInEx;
 using HarmonyLib;
 using LitJson;
+using OstraAutoloader.Courtesy;
 using OstraAutoloader.Mods;
 using UnityEngine;
 
@@ -41,6 +42,13 @@ public static class DataHandler_Patches
 
     plugin.Log.LogDebug($"Using mods path: {modPath}");
 
+    if (plugin.UninstallMode.Value)
+    {
+      plugin.Log.LogMessage("Ostra.Autoloader is uninstalling, goodbye!");
+      SafeLoadOrderManager.RestoreLoadOrderIfPossible(loadPath);
+      return true;
+    }
+
     DirectoryInfo pluginsDir = new(Paths.PluginPath);
     DirectoryInfo modsDir = new(modPath);
 
@@ -53,6 +61,8 @@ public static class DataHandler_Patches
     ModListing.CreateLoadingOrder();
 
     plugin.Log.LogInfo($"populating load_order.json automatically with {ModListing.sortedMods.Length} autoload mods");
+
+    SafeLoadOrderManager.BackupLoadOrderIfRequired(loadPath);
     WriteLoadingOrder(loadPath);
     return true;
   }

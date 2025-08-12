@@ -21,6 +21,13 @@ Ostra.Autoloader is a simple tool that automatically generates your `loading_ord
 3. **Resolve dependencies:** It figures out which mods depend on others and generates a correct loading order for you.
 4. **Create `loading_order.json`:** Finally, it writes out a `loading_order.json` file automatically, so the game knows the right order to load your mods. No more `invalid json` errors!
 
+## Configuration
+
+Ostra.Autoloader will generate a configuration file on first run. Use your mod manager's config editor or manually edit BepInEx/config/Ostra.Autoloader.cfg to modify these values
+
+- **BackupNeeded**: Managed automatically by Autoloader to determine if it needs to backup the existing load_order.json file. Will backup your load order the first time it runs if a backup doesn't already exist.
+- **UninstallMode**: Will clean up all changes made to the game and restore the backed up load_order.json file if it can. Once this flag is set Autoloader will no longer function until it is unset. Set this flag then run the game again prior to removal to ensure a completely clean uninstall process.
+
 ## Installation
 
 ### Manually (Not Recommended)

@@ -10,7 +10,13 @@ namespace OstraAutoloader;
 [BepInPlugin(LCMPluginInfo.PLUGIN_GUID, LCMPluginInfo.PLUGIN_NAME, LCMPluginInfo.PLUGIN_VERSION)]
 public class AutoloaderPlugin : BaseUnityPlugin
 {
-  internal static ManualLogSource Log = null!;
+  internal static AutoloaderPlugin Instance = null!;
+  internal ManualLogSource Log;
+  public AutoloaderPlugin()
+  {
+    Instance ??= this;
+    Log = Logger;
+  }
 
   private void Awake()
   {

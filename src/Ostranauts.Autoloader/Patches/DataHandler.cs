@@ -17,6 +17,7 @@ public static class DataHandler_Patches
   public static bool Init_Prefix()
   {
     string loadPath = string.Empty;
+    var plugin = AutoloaderPlugin.Instance;
 
     //Setup various paths
     if (File.Exists(Application.persistentDataPath + "/settings.json"))
@@ -38,26 +39,28 @@ public static class DataHandler_Patches
     string modPath;
     modPath = Path.GetDirectoryName(loadPath);
 
-    AutoloaderPlugin.Log.LogDebug($"Using mods path: {modPath}");
+    plugin.Log.LogDebug($"Using mods path: {modPath}");
 
     DirectoryInfo pluginsDir = new(Paths.PluginPath);
     DirectoryInfo modsDir = new(modPath);
 
-    AutoloaderPlugin.Log.LogInfo($"Searching {pluginsDir.FullName}");
+    plugin.Log.LogInfo($"Searching {pluginsDir.FullName}");
     ModListing.FindAllModsInDirectory(pluginsDir);
 
-    AutoloaderPlugin.Log.LogInfo($"Searching {modsDir.FullName}");
+    plugin.Log.LogInfo($"Searching {modsDir.FullName}");
     ModListing.FindAllModsInDirectory(modsDir);
 
     ModListing.CreateLoadingOrder();
 
-    AutoloaderPlugin.Log.LogInfo($"populating load_order.json automatically with {ModListing.sortedMods.Length} autoload mods");
+    plugin.Log.LogInfo($"populating load_order.json automatically with {ModListing.sortedMods.Length} autoload mods");
     WriteLoadingOrder(loadPath);
     return true;
   }
 
   internal static void WriteLoadingOrder(string filePath)
   {
+    var plugin = AutoloaderPlugin.Instance;
+
     JsonModList data = new()
     {
       strName = "Mod Loading Order",
@@ -79,7 +82,7 @@ public static class DataHandler_Patches
       sb.AppendLine(item.Inf.strName);
     }
 
-    AutoloaderPlugin.Log.LogInfo(sb);
+    plugin.Log.LogInfo(sb);
     ConsoleToGUI.instance.LogInfo(sb.ToString());
 
     using StreamWriter writer = new(filePath);

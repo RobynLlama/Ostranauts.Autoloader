@@ -33,9 +33,11 @@ public class AutoloadMod
 
   public bool ResolveDependencies()
   {
+    var plugin = AutoloaderPlugin.Instance;
+
     if (_visited)
     {
-      AutoloaderPlugin.Log.LogWarning($"Recursive dependency detected in {Inf.strName}");
+      plugin.Log.LogWarning($"Recursive dependency detected in {Inf.strName}");
       return false;
     }
 
@@ -57,7 +59,7 @@ public class AutoloadMod
       if (!ModListing.allModsByIdentifier.TryGetValue(name, out var mod))
       {
         if (hardDep)
-          AutoloaderPlugin.Log.LogWarning($"Unable to resolve dependency {name} for mod {Inf.strName}");
+          plugin.Log.LogWarning($"Unable to resolve dependency {name} for mod {Inf.strName}");
 
         return false;
       }
@@ -75,14 +77,14 @@ public class AutoloadMod
           }
           else
           {
-            AutoloaderPlugin.Log.LogWarning($"{depType} {name} is in a later loading group than mod {Inf.strName}");
+            plugin.Log.LogWarning($"{depType} {name} is in a later loading group than mod {Inf.strName}");
             return false;
           }
         }
         else
         {
           if (hardDep)
-            AutoloaderPlugin.Log.LogWarning($"Unable to resolve Dependency {name} for mod {Inf.strName}");
+            plugin.Log.LogWarning($"Unable to resolve Dependency {name} for mod {Inf.strName}");
           return false;
         }
       }
@@ -102,7 +104,7 @@ public class AutoloadMod
       foreach (var item in MetaInf.SoftDependencies)
       {
         if (!TryLoadMod(item, hardDep: false))
-          AutoloaderPlugin.Log.LogDebug($"Failed to resolve a soft dependency {item} for {Inf.strName}");
+          plugin.Log.LogDebug($"Failed to resolve a soft dependency {item} for {Inf.strName}");
       }
 
     Dependencies = [.. temp];
@@ -114,12 +116,13 @@ public class AutoloadMod
 
   public static AutoloadMod? FromDirectory(DirectoryInfo dir)
   {
+    var plugin = AutoloaderPlugin.Instance;
 
-    AutoloaderPlugin.Log.LogDebug($"Attempting to create AutoloadMod from {dir.Name}");
+    plugin.Log.LogDebug($"Attempting to create AutoloadMod from {dir.Name}");
 
     if (!dir.Exists)
     {
-      AutoloaderPlugin.Log.LogWarning($"Unable to create an Autoload from {dir.FullName}");
+      plugin.Log.LogWarning($"Unable to create an Autoload from {dir.FullName}");
       return null;
     }
 
@@ -131,13 +134,13 @@ public class AutoloadMod
 
     if (!modInfo.Exists)
     {
-      AutoloaderPlugin.Log.LogWarning($"{dir.FullName} does not contain a mod_info.json");
+      plugin.Log.LogWarning($"{dir.FullName} does not contain a mod_info.json");
       return null;
     }
 
     if (!modMeta.Exists)
     {
-      AutoloaderPlugin.Log.LogWarning($"{dir.FullName} does not contain an Autoload.Meta.toml");
+      plugin.Log.LogWarning($"{dir.FullName} does not contain an Autoload.Meta.toml");
       return null;
     }
 
@@ -149,7 +152,7 @@ public class AutoloadMod
 
       if (dict.Count < 1 || dict.Values.FirstOrDefault() is not JsonModInfo _rawInfo)
       {
-        AutoloaderPlugin.Log.LogWarning($"{modInfo.FullName} cannot be deserialized into a mod info");
+        plugin.Log.LogWarning($"{modInfo.FullName} cannot be deserialized into a mod info");
         return null;
       }
 
@@ -158,7 +161,7 @@ public class AutoloadMod
 
       if (metaObj is null)
       {
-        AutoloaderPlugin.Log.LogWarning($"{modMeta.FullName} cannot be deserialized into a mod meta");
+        plugin.Log.LogWarning($"{modMeta.FullName} cannot be deserialized into a mod meta");
         return null;
       }
 
@@ -166,7 +169,7 @@ public class AutoloadMod
     }
     catch (Exception ex)
     {
-      AutoloaderPlugin.Log.LogWarning($"Failed to create Autoload mod\n{ex}");
+      plugin.Log.LogWarning($"Failed to create Autoload mod\n{ex}");
       return null;
     }
 

@@ -26,11 +26,12 @@ public class AutoloadMetaInf
     using StreamReader reader = File.OpenText(file.FullName);
     TomlTable meta = TOML.Parse(reader);
 
+    var plugin = AutoloaderPlugin.Instance;
     var signature = meta["FileType"].AsString;
 
     if (!signature.HasValue || !string.Equals(signature.Value, "AUTOLOAD.META", StringComparison.InvariantCultureIgnoreCase))
     {
-      AutoloaderPlugin.Log.LogWarning($"Skipping a malformed Autoload meta file (no or bad FileType header): {signature.HasValue}|{signature.Value}");
+      plugin.Log.LogWarning($"Skipping a malformed Autoload meta file (no or bad FileType header): {signature.HasValue}|{signature.Value}");
       return null;
     }
 
@@ -49,7 +50,7 @@ public class AutoloadMetaInf
         loadingGroup = ModLoadingGroup.AfterFFU;
         break;
       default:
-        AutoloaderPlugin.Log.LogWarning($"Unable to parse loading group {LoadGroup}");
+        plugin.Log.LogWarning($"Unable to parse loading group {LoadGroup}");
         return null;
     }
 
@@ -57,7 +58,7 @@ public class AutoloadMetaInf
 
     if (!deps.IsTable)
     {
-      AutoloaderPlugin.Log.LogWarning("Dependencies is malformed");
+      plugin.Log.LogWarning("Dependencies is malformed");
       return null;
     }
 

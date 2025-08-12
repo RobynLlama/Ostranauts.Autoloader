@@ -19,28 +19,30 @@ public static class ModListing
       FindAllModsInDirectory(dir);
     }
 
+    var plugin = AutoloaderPlugin.Instance;
+
     foreach (var file in baseDir.GetFiles("Autoload.Meta.toml"))
     {
       if (file.Name == "Autoload.Meta.toml")
       {
-        AutoloaderPlugin.Log.LogDebug($"Found an autoload in {baseDir.Name}");
+        plugin.Log.LogDebug($"Found an autoload in {baseDir.Name}");
 
         try
         {
           var mod = AutoloadMod.FromDirectory(baseDir);
           if (mod is not null)
             if (allModsByIdentifier.ContainsKey(mod.Inf.strName))
-              AutoloaderPlugin.Log.LogWarning($"Attempting to load the same mod twice! {mod.Inf.strName}");
+              plugin.Log.LogWarning($"Attempting to load the same mod twice! {mod.Inf.strName}");
             else
             {
-              AutoloaderPlugin.Log.LogInfo($"Registered {mod.Inf.strName}@{mod.Inf.strModVersion}");
+              plugin.Log.LogInfo($"Registered {mod.Inf.strName}@{mod.Inf.strModVersion}");
               allModsByIdentifier.Add(mod.Inf.strName, mod);
             }
 
         }
         catch (Exception ex)
         {
-          AutoloaderPlugin.Log.LogWarning($"Encountered malformed Autoload:\n{ex}");
+          plugin.Log.LogWarning($"Encountered malformed Autoload:\n{ex}");
         }
       }
     }

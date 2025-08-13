@@ -40,6 +40,19 @@ public static class DataHandler_Patches
     string modPath;
     modPath = Path.GetDirectoryName(loadPath);
 
+    if (Directory.Exists(loadPath))
+    {
+      //Somehow the user has provided me with a directory
+      //instead of a file for the load path
+
+      plugin.Log.LogError($"""
+      Error: The load path is a directory when it should be `loading_order.json` please use the file menu under option to select the correct file. Ostra.Autoloader cannot continue, shutting down.
+        Path: {loadPath}
+      """);
+
+      return true;
+    }
+
     plugin.Log.LogDebug($"Using mods path: {modPath}");
 
     if (plugin.UninstallMode.Value)

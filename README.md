@@ -43,10 +43,12 @@ Ostra.Autoloader will generate a configuration file on first run. Use your mod m
 - Download a mod manager that supports the Ostranauts community on the Thunderstore
 - Select the Ostranauts community and create a new profile
 - Browse the available mods and press "Install" on any that support Ostra.Autoloader. Autoloader will be downloaded as a dependency
+- If the mod manager indicates there is an update for the mod, you should generally always do so. It is recommended to keep Ostra.Autoloader at its latest version since the manifest and loading methods may change.
 
-#### Available Managers
+Mod Managers:
 
-- TBA (Mod managers are not updated for the community yet)
+- [Gale Mod Manager](https://thunderstore.io/c/ostranauts/p/Kesomannen/GaleModManager/)
+- [R2 Mod Manager](https://thunderstore.io/c/ostranauts/p/ebkr/r2modman/)
 
 ## Example mod folder structure
 

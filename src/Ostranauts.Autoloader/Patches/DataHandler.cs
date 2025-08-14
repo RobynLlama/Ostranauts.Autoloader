@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -45,10 +46,13 @@ public static class DataHandler_Patches
       //Somehow the user has provided me with a directory
       //instead of a file for the load path
 
-      plugin.Log.LogError($"""
+      string msg = $"""
       Error: The load path is a directory when it should be `loading_order.json` please use the file menu under option to select the correct file. Ostra.Autoloader cannot continue, shutting down.
         Path: {loadPath}
-      """);
+      """;
+
+      plugin.Log.LogError(msg);
+      ConsoleToGUI.instance.Log(msg, string.Empty, LogType.Error);
 
       return true;
     }

@@ -1,7 +1,7 @@
 {
   "name": "OstraAutoloader",
   "description": "A hassle-free automatic mod organizer for Ostranauts that also supports loading from the Plugins dir",
-  "version_number": "0.1.9",
+  "version_number": "0.1.10",
   "dependencies": [
     "BepInEx-BepInExPack_Ostranauts-5.4.2303",
     "Robyn-Tommy-3.1.2"

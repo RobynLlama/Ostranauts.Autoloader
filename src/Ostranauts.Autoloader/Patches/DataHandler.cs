@@ -88,6 +88,24 @@ public static class DataHandler_Patches
   {
     var plugin = AutoloaderPlugin.Instance;
 
+    FileInfo output = new(filePath);
+    DirectoryInfo folder = new(Path.GetDirectoryName(filePath));
+
+    if (!folder.Exists)
+    {
+      plugin.Log.LogWarning($"""
+
+      Unable to write load_order.json
+      Autoloader will now shut down, your game will load without mods
+        Reason:    Mod folder does not exist
+        Directory: {folder.FullName}
+
+      """);
+
+      ConsoleToGUI.instance.Log("[Ostra.Autoloader] Unable to write mod_info.json, game will load without mods, see LogOutput.txt for more info.", "", LogType.Warning);
+      return;
+    }
+
     JsonModList data = new()
     {
       strName = "Mod Loading Order",
@@ -110,7 +128,10 @@ public static class DataHandler_Patches
     }
 
     plugin.Log.LogInfo(sb);
-    ConsoleToGUI.instance.LogInfo(sb.ToString());
+    ConsoleToGUI.instance.LogInfo($"""
+      [Ostra.Autoloader]
+      {sb}
+      """);
 
     using StreamWriter writer = new(filePath);
     JsonWriter jsonWriter = new(writer)

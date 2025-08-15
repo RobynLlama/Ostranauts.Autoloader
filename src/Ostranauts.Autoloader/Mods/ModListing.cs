@@ -13,13 +13,25 @@ public static class ModListing
 
   internal static void FindAllModsInDirectory(DirectoryInfo baseDir)
   {
+    var plugin = AutoloaderPlugin.Instance;
+
+    if (!baseDir.Exists)
+    {
+      plugin.Log.LogInfo($"""
+      Skipping a directory in FindAllModsInDirectory(DirectoryInfo baseDir)
+        Reason:    Directory does not exist
+        Directory: {baseDir.FullName}
+
+      Please check that your configured mod folder exists, mods from other sources will still load.
+      """);
+      return;
+    }
+
     //Traverse down the tree first
     foreach (var dir in baseDir.GetDirectories())
     {
       FindAllModsInDirectory(dir);
     }
-
-    var plugin = AutoloaderPlugin.Instance;
 
     foreach (var file in baseDir.GetFiles("Autoload.Meta.toml"))
     {

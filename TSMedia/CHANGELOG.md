@@ -2,6 +2,10 @@
 
 For the full changelog please read the project's [commit history](https://github.com/RobynLlama/Ostranauts.Autoloader/commits/main/)
 
+## Version 0.1.10
+
+- Will now fail gracefully if the user provided mod string doesn't exist
+
 ## Version 0.1.9
 
 - Will now fail gracefully if the user provided mod string is not properly formatted

@@ -74,7 +74,7 @@ See the [default Autoload file](https://github.com/RobynLlama/Ostranauts.Autoloa
 
 ### How to package for the Thunderstore
 
-Mod managers that install from the thunderstore will modify your folder structure. Please be familiar with the [package documentation](https;//wiki.thunderstore.io/creating-a-package)
+Mod managers that install from the thunderstore will modify your folder structure. Please be familiar with the [package documentation](https://wiki.thunderstore.io/creating-a-package)
 
 Sample Package Layout:
 
